@@ -1,7 +1,13 @@
 package gameWindow;
 
+import javax.swing.SwingUtilities;
+
 public class GameRunner{
 	public static void main(String[] args){
-		System.out.println("Hello World");
+		SwingUtilities.invokeLater(new Runnable(){
+			public void run(){
+				new GameWindow();
+			}
+		});
 	}
 }
