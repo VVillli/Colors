@@ -17,7 +17,7 @@ public class GameWindow extends JFrame{
 		
 		this.pack();
 		
-		this.setSize(new Dimension(806,828));
+		this.setSize(new Dimension(800,800));
 		
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 	    int x = (int) ((dimension.getWidth() - this.getWidth()) / 2);

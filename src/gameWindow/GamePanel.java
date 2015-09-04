@@ -1,15 +1,20 @@
 package gameWindow;
 
+import gameObjects.Player;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.MouseInfo;
 import java.awt.RenderingHints;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
-public class GamePanel extends JPanel implements Runnable{
+public class GamePanel extends JPanel implements Runnable, MouseMotionListener{
 	public static int width = 800;
 	public static int height = 800;
 	
@@ -22,10 +27,17 @@ public class GamePanel extends JPanel implements Runnable{
 	private final int FPS = 60;
 	private int averageFPS;
 	
+	private Player p;
+	
+	private int mouseX;
+	private int mouseY;
+	
 	public GamePanel(){
 		super();
 		
 		running = false;
+		
+		p = new Player(Color.BLUE);
 		
 		setPreferredSize(new Dimension(width, height));
 		setFocusable(true);
@@ -38,6 +50,8 @@ public class GamePanel extends JPanel implements Runnable{
 			thread = new Thread(this);
 			thread.start();
 		}
+		
+		this.addMouseMotionListener(this);
 	}
 	
 	public void run(){
@@ -84,7 +98,9 @@ public class GamePanel extends JPanel implements Runnable{
 		}
 	}
 	
-	public void gameUpdate(){}
+	public void gameUpdate(){
+		p.update(mouseX, mouseY);
+	}
 	
 	public void gameRender(){
 		g.setColor(new Color(40,40,40,255));
@@ -92,11 +108,22 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		g.setColor(Color.WHITE);
 		g.drawString("FPS: " + averageFPS, 10, 20);
+		
+		p.draw(g);
 	}
 	
 	public void gameDraw(){
 		Graphics g2 = this.getGraphics();
 		g2.drawImage(image, 0, 0, null);
 		g2.dispose();
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		mouseX = e.getX();
+		mouseY = e.getY();
 	}
 }
