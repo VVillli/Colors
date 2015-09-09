@@ -11,29 +11,29 @@ public class Player {
 	private int attack;
 	
 	private int speed;
-	private int xLoc;
-	private int yLoc;
+	private int x;
+	private int y;
 	
 	private int r;
 	
 	public Player(Color c){
 		this.c = c;
 		
-		xLoc = 390;
-		yLoc = 390;
+		x = 390;
+		y = 390;
 		
 		r = 10;
 		
-		speed = 10;
+		speed = 10	;
 	}
 	
-	public void update(int xMouse, int yMouse){
-		double yDiff = yMouse - yLoc;
-		double xDiff = xMouse - xLoc;
+	public void update(int mouseX, int mouseY){
+		double yDiff = mouseY - y;
+		double xDiff = mouseX - x;
 		
 		double rad;
 		
-		if(xMouse < xLoc){
+		if(mouseX < x){
 			rad = Math.atan(yDiff/xDiff) - Math.PI;
 		} 
 		else{
@@ -43,12 +43,12 @@ public class Player {
 		int dx = (int) (Math.cos(rad)*speed);
 		int dy = (int) (Math.sin(rad)*speed);
 		
-		xLoc += dx;
-		yLoc += dy;
+		x += dx;
+		y += dy;
 	}
 	
 	public void draw(Graphics2D g){
 		g.setColor(c);
-		g.fillOval(xLoc, yLoc, r*2, r*2);
+		g.fillOval(x, y, r*2, r*2);
 	}
 }
