@@ -8,13 +8,15 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.MouseInfo;
 import java.awt.RenderingHints;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
-public class GamePanel extends JPanel implements Runnable, MouseMotionListener{
+public class GamePanel extends JPanel implements Runnable, KeyListener, MouseMotionListener{
 	public static int width = 800;
 	public static int height = 800;
 	
@@ -52,6 +54,7 @@ public class GamePanel extends JPanel implements Runnable, MouseMotionListener{
 		}
 		
 		this.addMouseMotionListener(this);
+		this.addKeyListener(this);
 	}
 	
 	public void run(){
@@ -103,7 +106,7 @@ public class GamePanel extends JPanel implements Runnable, MouseMotionListener{
 	}
 	
 	public void gameRender(){
-		g.setColor(new Color(40,40,40,255));
+		g.setColor(new Color(230,230,230));
 		g.fillRect(0, 0, width, height);
 		
 		g.setColor(Color.WHITE);
@@ -126,4 +129,47 @@ public class GamePanel extends JPanel implements Runnable, MouseMotionListener{
 		mouseX = e.getX();
 		mouseY = e.getY();
 	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		switch(e.getKeyCode()){
+			case KeyEvent.VK_W:
+				p.setUp(true);
+				break;
+			case KeyEvent.VK_A:
+				p.setLeft(true);
+				break;
+			case KeyEvent.VK_S:
+				p.setDown(true);
+				break;
+			case KeyEvent.VK_D:
+				p.setRight(true);
+				break;
+			default:
+				break;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		switch(e.getKeyCode()){
+		case KeyEvent.VK_W:
+			p.setUp(false);
+			break;
+		case KeyEvent.VK_A:
+			p.setLeft(false);
+			break;
+		case KeyEvent.VK_S:
+			p.setDown(false);
+			break;
+		case KeyEvent.VK_D:
+			p.setRight(false);
+			break;
+		default:
+			break;
+	}
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {}
 }
