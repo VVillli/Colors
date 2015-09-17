@@ -30,6 +30,10 @@ public class Player {
 	
 	private double angle;
 	
+	private boolean firing;
+	private long firingTimer;
+	private long firingDelay;
+	
 	public Player(Color c){
 		this.c = c;
 		
@@ -49,12 +53,17 @@ public class Player {
 		speed = 10;
 		
 		angle = 0;
+		
+		firing = false;
+		firingTimer = System.nanoTime();
+		firingDelay = 200;
 	}
 	
 	public void setUp(boolean b){up = b;}
 	public void setDown(boolean b){down = b;}
 	public void setLeft(boolean b){left = b;}
 	public void setRight(boolean b){right = b;}
+	public void setFiring(boolean b){firing = b;}
 	
 	public void update(int mouseX, int mouseY){
 		if(up){dy = -speed;}
@@ -80,6 +89,22 @@ public class Player {
 		} 
 		else{
 			angle = Math.toDegrees(Math.atan(distY/distX));
+		}
+		
+		if(firing){
+			long elapsed = (System.nanoTime() - firingTimer)/1000000;
+			if(elapsed > firingDelay){
+				firingTimer = System.nanoTime();
+				if(angle < 0){
+					GamePanel.b.add(new Bullet(x - 9, y - 9,angle));
+				}
+				else if(angle > 45 && angle < 90){
+					GamePanel.b.add(new Bullet(x - 10, y - 10,angle));
+				}
+				else{
+					GamePanel.b.add(new Bullet(x, y,angle));
+				}
+			}
 		}
 	}
 	
