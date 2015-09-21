@@ -126,7 +126,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 			}
 		}
 		
-		for(int i = 0; i < t.size(); i++){
+		/*for(int i = 0; i < t.size(); i++){
 			boolean remove = false;
 			
 			for(int j = 0; j < b.size(); j++){
@@ -142,7 +142,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 				t.remove(i);
 				i--;
 			}
-		}
+		}*/
 	}
 	
 	public void gameRender(){

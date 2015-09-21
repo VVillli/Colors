@@ -56,7 +56,7 @@ public class Player {
 		
 		firing = false;
 		firingTimer = System.nanoTime();
-		firingDelay = 500;
+		firingDelay = 20;
 	}
 	
 	public void setUp(boolean b){up = b;}
@@ -95,15 +95,7 @@ public class Player {
 			long elapsed = (System.nanoTime() - firingTimer)/1000000;
 			if(elapsed > firingDelay){
 				firingTimer = System.nanoTime();
-				if(angle < 0){
-					GamePanel.b.add(new Bullet(x - 9, y - 9,angle));
-				}
-				else if(angle > 45 && angle < 90){
-					GamePanel.b.add(new Bullet(x - 10, y - 10,angle));
-				}
-				else{
-					GamePanel.b.add(new Bullet(x, y,angle));
-				}
+				GamePanel.b.add(new Bullet(x, y, angle));
 			}
 		}
 	}

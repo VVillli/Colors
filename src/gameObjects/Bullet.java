@@ -77,9 +77,19 @@ public class Bullet {
 		AffineTransform backup = g.getTransform();
 		AffineTransform trans = new AffineTransform();
 		
-		trans.rotate(Math.toRadians(angle), x + 20, y + 20); 
+		double transX = Math.sin(Math.toRadians(angle))*18.5;
+		double transY = Math.cos(Math.toRadians(angle))*12;
+		
+		System.out.println(angle);
+		
+		if(angle > -270 && angle < -180){
+			transY = Math.cos(Math.toRadians(angle))*-12;
+		}
+		
+		trans.translate(transX, transY);
+		trans.rotate(Math.toRadians(angle), x, y); 
 		g.setTransform(trans);
-		g.drawImage(images[currentImage], x, y, 40, 40, null);
+		g.drawImage(images[currentImage], x, y, 43, 14, null);
 		
 		g.setTransform(backup);
 	}
