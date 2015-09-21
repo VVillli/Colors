@@ -11,7 +11,7 @@ import gameWindow.GamePanel;
 public class Player {
 	
 	private Color c;
-	
+	private int playerType;
 	private int health;
 	private int attack;
 	
@@ -100,13 +100,22 @@ public class Player {
 		}
 	}
 	
-	public void draw(Graphics2D g){
+	public void draw(Graphics2D g, int playerType){
 		AffineTransform backup = g.getTransform();
 		AffineTransform trans = new AffineTransform();
 		
 		trans.rotate(Math.toRadians(angle), x + 12, y + 12); 
 		g.setTransform(trans);
-		g.drawImage(new ImageIcon("images/greenDark.png").getImage(), x, y, 24, 24, null);
+		
+		if (playerType == 1)
+		{
+			g.drawImage(new ImageIcon("images/greenDark.png").getImage(), x, y, 24, 24, null);
+		}
+		else
+		{
+			g.drawImage(new ImageIcon("images/redot.png").getImage(), x, y, 24, 24, null);
+		}
+		
 		
 		g.setTransform(backup);
 	}
