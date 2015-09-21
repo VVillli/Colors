@@ -61,6 +61,4 @@ public class User {
     {
         return new String(socket.toString());
     }
-
-
 }
