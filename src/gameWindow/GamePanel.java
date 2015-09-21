@@ -27,6 +27,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 	private Thread thread;
 	private boolean running;
 	
+	public int count;
+	
 	private BufferedImage image;
 	private Graphics2D g;
 	
@@ -133,6 +135,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 				remove = t.get(i).update(b.get(j).getX(), b.get(j).getY());
 				if(remove){
 					b.remove(j);
+					count++;
 					break;
 				}
 			}
@@ -151,6 +154,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		
 		g.setColor(Color.WHITE);
 		g.drawString("FPS: " + averageFPS, 10, 20);
+		g.drawString("Score: " + count, 10, 32);
 		
 		for(int i = 0; i < b.size(); i++){
 			b.get(i).draw(g);
@@ -160,7 +164,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 			t.get(i).draw(g);
 		}
 		
-		p.draw(g, 2);
+		p.draw(g, 1);
 	}
 	
 	public void gameDraw(){
