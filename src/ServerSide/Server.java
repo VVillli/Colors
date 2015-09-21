@@ -3,12 +3,12 @@ import java.io.*;
 import java.util.*;
 import java.net.*;	
 public class Server extends Thread{
-			private static final int ServerPort = 111111;
+			private static final int ServerPort = 63400;
 			private static ServerSocket serverSocket;		
 		    private static BufferedReader bufferedReader;
 		    private static InetAddress hostAddress; 
 		    private Socket socket;
-		    private ArrayList<Player> players = new ArrayList<Player>();
+		    private ArrayList<User> players = new ArrayList<User>();
 		    
 		    public static void main(String[] args)
 		    {		
@@ -37,15 +37,14 @@ public class Server extends Thread{
 		    public void run()
 		        {
 		            // Announce the starting of the process
-		            System.out.println("Room has been started.");
+		            System.out.println("Game has been started.");
 		            // Enter the main loop
 		            while(true)
 		            {
 		                for(int i = 0;i < players.size();i++)
-		    
 		                {
-		    
-		                   
+		                	
+		                	
 		    
 		                 
 		    
@@ -59,15 +58,15 @@ public class Server extends Thread{
 		                    System.out.println("Could not get a client.");
 		                }
 		                // Client has connected
-		    
 		                System.out.println("Client "+socket+" has connected.");
 		    
 		                // Add user to list
 		    
-		                players.add(new Player(socket));
+		                players.add(new User(socket));
 		    
 		            }
 
 
+		        }
 }
 
