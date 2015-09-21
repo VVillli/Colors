@@ -50,6 +50,9 @@ public class Bullet {
 		switchImage = 10;
 	}
 	
+	public int getX(){return x;}
+	public int getY(){return y;}
+	
 	public boolean update(){
 		x += dx;
 		y += dy;

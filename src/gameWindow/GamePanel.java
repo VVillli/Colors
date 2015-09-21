@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 
 import gameObjects.Bullet;
 import gameObjects.Player;
+import gameObjects.Target;
 
 public class GamePanel extends JPanel implements Runnable, KeyListener, MouseListener, MouseMotionListener{
 	public static int width = 800;
@@ -38,6 +39,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 	private int mouseY;
 	
 	public static List<Bullet> b;
+	public static List<Target> t;
 	
 	public GamePanel(){
 		super();
@@ -73,6 +75,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 		
 		b = new ArrayList<Bullet>();
+		t = new ArrayList<Target>();
+		
+		t.add(new Target(30, 30));
 		
 		long startTime;
 		long URDTimeMilli;
@@ -120,6 +125,24 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 				i--;
 			}
 		}
+		
+		for(int i = 0; i < t.size(); i++){
+			boolean remove = false;
+			
+			for(int j = 0; j < b.size(); j++){
+				remove = t.get(i).update(b.get(j).getX(), b.get(j).getY());
+				if(remove){
+					b.remove(j);
+					break;
+				}
+			}
+			
+			if(remove){
+				t.add(new Target((int)(Math.random()*800),(int)(Math.random()*800)));
+				t.remove(i);
+				i--;
+			}
+		}
 	}
 	
 	public void gameRender(){
@@ -131,6 +154,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		
 		for(int i = 0; i < b.size(); i++){
 			b.get(i).draw(g);
+		}
+		
+		for(int i = 0; i < t.size(); i++){
+			t.get(i).draw(g);
 		}
 		
 		p.draw(g);

@@ -50,7 +50,7 @@ public class Player {
 		left = false;
 		right = false;
 		
-		speed = 10;
+		speed = 5;
 		
 		angle = 0;
 		
