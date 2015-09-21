@@ -56,7 +56,7 @@ public class Player {
 		
 		firing = false;
 		firingTimer = System.nanoTime();
-		firingDelay = 500;
+		firingDelay = 200;
 	}
 	
 	public void setUp(boolean b){up = b;}
