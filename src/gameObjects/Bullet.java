@@ -76,24 +76,6 @@ public class Bullet {
 	public void draw(Graphics2D g){
 		AffineTransform backup = g.getTransform();
 		AffineTransform trans = new AffineTransform();
-		
-		double tempAngle = angle;
-		
-		if(angle > -90 && angle < 0){
-			tempAngle -= 90;
-		}
-		
-		double transX = Math.sin(Math.toRadians(tempAngle))*18.5;
-		double transY = Math.cos(Math.toRadians(tempAngle))*12;
-		
-		System.out.println(angle);
-		
-		if(angle > -90 && angle < 0){
-			transX = -Math.sin(Math.toRadians(tempAngle))*20;
-			transY = -Math.cos(Math.toRadians(tempAngle))*30;
-		}
-		
-		trans.translate(transX, transY);
 		trans.rotate(Math.toRadians(angle), x, y); 
 		g.setTransform(trans);
 		g.drawImage(images[currentImage], x, y, 43, 14, null);

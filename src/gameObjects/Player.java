@@ -95,7 +95,7 @@ public class Player {
 			long elapsed = (System.nanoTime() - firingTimer)/1000000;
 			if(elapsed > firingDelay){
 				firingTimer = System.nanoTime();
-				GamePanel.b.add(new Bullet(x, y, angle));
+				GamePanel.b.add(new Bullet(x - (int)(Math.cos(Math.toRadians(angle))*18), y - (int)(Math.sin(Math.toRadians(angle))*6), angle));
 			}
 		}
 	}
