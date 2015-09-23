@@ -68,7 +68,7 @@ public class Player {
 		firingDelay = 0;
 		
 		try {
-			user = new User(InetAddress.getLocalHost().getHostName(), 63500, this);
+			user = new User(InetAddress.getLocalHost().getHostName(), 9000, this);
 			user.run();
 		} catch (UnknownHostException e) {	e.printStackTrace();} 
 		}
