@@ -3,10 +3,16 @@ package gameObjects;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 import javax.swing.ImageIcon;
 
 import gameWindow.GamePanel;
+import ServerSide.User;
 
 public class Player {
 	
@@ -34,6 +40,9 @@ public class Player {
 	private long firingTimer;
 	private long firingDelay;
 	
+	//Server
+	private User user;
+	private PrintWriter print;
 	public Player(Color c){
 		this.c = c;
 		
@@ -57,7 +66,12 @@ public class Player {
 		firing = false;
 		firingTimer = System.nanoTime();
 		firingDelay = 0;
-	}
+		
+		try {
+			user = new User(InetAddress.getLocalHost().getHostName(), 63500, this);
+			user.run();
+		} catch (UnknownHostException e) {	e.printStackTrace();} 
+		}
 	
 	public void setUp(boolean b){up = b;}
 	public void setDown(boolean b){down = b;}
