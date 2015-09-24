@@ -43,6 +43,7 @@ public class Player {
 	//Server
 	private User user;
 	private PrintWriter print;
+	
 	public Player(Color c){
 		this.c = c;
 		
@@ -109,7 +110,25 @@ public class Player {
 			long elapsed = (System.nanoTime() - firingTimer)/1000000;
 			if(elapsed > firingDelay){
 				firingTimer = System.nanoTime();
-				GamePanel.b.add(new Bullet(x - (int)(Math.cos(Math.toRadians(angle))*18), y - (int)(Math.sin(Math.toRadians(angle))*6), angle));
+				
+				int transX;
+				int transY;
+				
+				if(angle <= -90){
+					transX = x + 18 - (int)(Math.cos(Math.toRadians(angle))*18);
+				}
+				else{
+					transX = x - 18 + (int)(Math.cos(Math.toRadians(angle))*18);
+				}
+				
+				if(angle > -180 && angle < 0){
+					transY = y + 12 - (int)(Math.sin(Math.toRadians(angle))*12);
+				}
+				else{
+					transY = y - 12 + (int)(Math.sin(Math.toRadians(angle))*12);
+				}
+				
+				GamePanel.b.add(new Bullet(transX, transY, angle));
 			}
 		}
 	}
