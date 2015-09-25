@@ -40,10 +40,16 @@ public class Player {
 	private long firingTimer;
 	private long firingDelay;
 	
+	
 	//Server
 	private User user;
+<<<<<<< HEAD
 	private PrintWriter print;
 	
+=======
+	private int score;
+
+>>>>>>> 5e7f499b283f3724c2d226a0f10c7dfad2419304
 	public Player(Color c){
 		this.c = c;
 		
@@ -68,10 +74,10 @@ public class Player {
 		firingTimer = System.nanoTime();
 		firingDelay = 0;
 		
-		try {
-			user = new User(InetAddress.getLocalHost().getHostName(), 9000, this);
-			user.run();
-		} catch (UnknownHostException e) {	e.printStackTrace();} 
+			try {
+				user = new User(InetAddress.getLocalHost().getHostName(), 9005, this);
+				user.start();
+			} catch (UnknownHostException e) {} 
 		}
 	
 	public void setUp(boolean b){up = b;}
@@ -151,5 +157,14 @@ public class Player {
 		
 		
 		g.setTransform(backup);
+	}
+	
+	public int getScore(){
+		return score;
+	}
+	
+	public void increaseScore(){
+		score++;
+		System.out.println("New Score " +  score);
 	}
 }
