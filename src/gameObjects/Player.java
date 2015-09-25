@@ -69,7 +69,7 @@ public class Player {
 		firingDelay = 0;
 		
 		try {
-			user = new User(InetAddress.getLocalHost().getHostName(), 63500, this);
+			user = new User(InetAddress.getLocalHost().getHostName(), 9000, this);
 			user.run();
 		} catch (UnknownHostException e) {	e.printStackTrace();} 
 		}
@@ -115,7 +115,7 @@ public class Player {
 				int transY;
 				
 				if(angle <= -90){
-					transX = x + 18 - (int)(Math.cos(Math.toRadians(angle))*18);
+					transX = x + 18 + (int)(Math.cos(Math.toRadians(angle))*18);
 				}
 				else{
 					transX = x - 18 + (int)(Math.cos(Math.toRadians(angle))*18);

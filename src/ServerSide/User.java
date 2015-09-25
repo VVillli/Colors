@@ -54,10 +54,16 @@ public class User extends Thread{
 		}
 
 	}
+	
+	public Player getPlayer(){
+		return player;
+		
+	}
 
 	public void run() {
 		// Creating a User object
-		User client = new User("localhost", 63500, player);
+		User client = new User("localhost", port, player);
+		while (true){
 		try {
 			// trying to establish connection to the server
 			client.connect();
@@ -72,6 +78,7 @@ public class User extends Thread{
 			System.err
 					.println("Cannot establish connection. Server may not be up."
 							+ e.getMessage());
+		}
 		}
 	}
 }
