@@ -3,10 +3,16 @@ package gameObjects;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 import javax.swing.ImageIcon;
 
 import gameWindow.GamePanel;
+import ServerSide.User;
 
 public class Player {
 	
@@ -34,6 +40,12 @@ public class Player {
 	private long firingTimer;
 	private long firingDelay;
 	
+	
+	//Server
+	private User user;
+	private PrintWriter print;
+	
+	private int score;
 	public Player(Color c){
 		this.c = c;
 		
@@ -56,8 +68,13 @@ public class Player {
 		
 		firing = false;
 		firingTimer = System.nanoTime();
-		firingDelay = 20;
-	}
+		firingDelay = 0;
+		
+			try {
+				user = new User(InetAddress.getLocalHost().getHostName(), 9005, this);
+				user.start();
+			} catch (UnknownHostException e) {} 
+		}
 	
 	public void setUp(boolean b){up = b;}
 	public void setDown(boolean b){down = b;}
@@ -95,7 +112,25 @@ public class Player {
 			long elapsed = (System.nanoTime() - firingTimer)/1000000;
 			if(elapsed > firingDelay){
 				firingTimer = System.nanoTime();
-				GamePanel.b.add(new Bullet(x, y, angle));
+				
+				int transX;
+				int transY;
+				
+				if(angle <= -90){
+					transX = x + 18 + (int)(Math.cos(Math.toRadians(angle))*18);
+				}
+				else{
+					transX = x - 18 + (int)(Math.cos(Math.toRadians(angle))*18);
+				}
+				
+				if(angle > -180 && angle < 0){
+					transY = y + 12 - (int)(Math.sin(Math.toRadians(angle))*12);
+				}
+				else{
+					transY = y - 12 + (int)(Math.sin(Math.toRadians(angle))*12);
+				}
+				
+				GamePanel.b.add(new Bullet(transX, transY, angle));
 			}
 		}
 	}
@@ -118,5 +153,14 @@ public class Player {
 		
 		
 		g.setTransform(backup);
+	}
+	
+	public int getScore(){
+		return score;
+	}
+	
+	public void increaseScore(){
+		score++;
+		System.out.println("New Score " +  score);
 	}
 }

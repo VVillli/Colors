@@ -16,6 +16,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import GameState.GameStateManager;
 import gameObjects.Bullet;
 import gameObjects.Player;
 import gameObjects.Target;
@@ -23,9 +24,12 @@ import gameObjects.Target;
 public class GamePanel extends JPanel implements Runnable, KeyListener, MouseListener, MouseMotionListener{
 	public static int width = 800;
 	public static int height = 800;
+	public static int SCALE = 2;
 	
 	private Thread thread;
 	private boolean running;
+	
+	public int count;
 	
 	private BufferedImage image;
 	private Graphics2D g;
@@ -40,6 +44,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 	
 	public static List<Bullet> b;
 	public static List<Target> t;
+	
+	//game state manager
+	private GameStateManager gsm;
 	
 	public GamePanel(){
 		super();
@@ -70,9 +77,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
 		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		g = (Graphics2D)image.getGraphics();
+		
+		gsm = new GameStateManager();
+		
+		
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+		
+		
+		
 		
 		b = new ArrayList<Bullet>();
 		t = new ArrayList<Target>();
@@ -99,6 +113,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 			URDTimeMilli = (System.nanoTime() - startTime)/1000000;
 			
 			waitTime = targetTime - URDTimeMilli;
+			if (waitTime <0) waitTime = 5;
+			
 			
 			try{
 				Thread.sleep(waitTime);
@@ -117,6 +133,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 	
 	public void gameUpdate(){
 		p.update(mouseX, mouseY);
+		gsm.update();
 		
 		for(int i = 0; i < b.size(); i++){
 			boolean remove = b.get(i).update();
@@ -133,6 +150,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 				remove = t.get(i).update(b.get(j).getX(), b.get(j).getY());
 				if(remove){
 					b.remove(j);
+					count++;
+					p.increaseScore();
 					break;
 				}
 			}
@@ -151,6 +170,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		
 		g.setColor(Color.WHITE);
 		g.drawString("FPS: " + averageFPS, 10, 20);
+		g.drawString("Score: " + count, 10, 32);
 		
 		for(int i = 0; i < b.size(); i++){
 			b.get(i).draw(g);
@@ -160,12 +180,19 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 			t.get(i).draw(g);
 		}
 		
-		p.draw(g, 2);
+		p.draw(g, 1);
 	}
 	
 	public void gameDraw(){
+		gsm.draw(g);
 		Graphics g2 = this.getGraphics();
 		g2.drawImage(image, 0, 0, null);
+		g2.dispose();
+	}
+	
+	public void drawToScreen(){
+		Graphics g2 = getGraphics();
+		g2.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE  , null);
 		g2.dispose();
 	}
 
@@ -183,6 +210,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		
+		gsm.keyPressed(e.getKeyCode());
+		
 		switch(e.getKeyCode()){
 			case KeyEvent.VK_W:
 				p.setUp(true);
@@ -203,6 +233,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		gsm.keyReleased(e.getKeyCode());
 		switch(e.getKeyCode()){
 		case KeyEvent.VK_W:
 			p.setUp(false);
