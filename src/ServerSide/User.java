@@ -59,11 +59,10 @@ public class User extends Thread{
 		} catch (IOException e) {
 		}
 	}
-
+	
 	public void send(String message) throws IOException {
 		try {
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socketClient.getOutputStream()));
-			
 			System.out.println("Server << " + message);
 			writer.write(message+"/n");
 		//	writer.newLine();
@@ -85,9 +84,12 @@ public class User extends Thread{
 		this.connect();
 		while (connected){
 			try {
-				send(/*Integer.toString(player.getScore())*/ "Hi");
-				//wait(100);
-			//	read();
+				if(player.getScore() > score){
+					send(/*Integer.toString(player.getScore())*/ "Hi");
+					//wait(100);
+				//	read();
+				}
+				read();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
