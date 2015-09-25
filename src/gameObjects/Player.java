@@ -69,10 +69,10 @@ public class Player {
 		firingTimer = System.nanoTime();
 		firingDelay = 0;
 		
-		try {
-			user = new User(InetAddress.getLocalHost().getHostName(), 9005, this);
-			user.run();
-		} catch (UnknownHostException e) {} 
+			try {
+				user = new User(InetAddress.getLocalHost().getHostName(), 9005, this);
+				user.start();
+			} catch (UnknownHostException e) {} 
 		}
 	
 	public void setUp(boolean b){up = b;}
@@ -142,5 +142,6 @@ public class Player {
 	
 	public void increaseScore(){
 		score++;
+		System.out.println("New Score " +  score);
 	}
 }
