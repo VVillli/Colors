@@ -9,6 +9,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -23,6 +24,15 @@ public class User extends Thread{
 	private int score;
 	private int theirScore;
 	boolean connected;
+	
+	
+	 //Socket s1=null;
+	 String line=null;
+	 BufferedReader br=null;
+	 BufferedReader is=null;
+	 PrintWriter os=null;
+	
+	 
 	public User(String hostname, int port, Player player) {
 		this.hostname = hostname;
 		this.port = port;
@@ -30,6 +40,19 @@ public class User extends Thread{
 		score = 0;
 		theirScore = 0;
 		connected = false;
+		
+		
+		 try {
+			 	socketClient=new Socket(hostname, 9005); // You can use static final constant PORT_NUM
+		        br= new BufferedReader(new InputStreamReader(System.in));
+		        is=new BufferedReader(new InputStreamReader(socketClient.getInputStream()));
+		        os= new PrintWriter(socketClient.getOutputStream());
+		    }
+		    catch (IOException e){
+		        //e.printStackTrace();
+		        System.err.print("IO Exception");
+		        return;
+		    }
 	}
 
 	public void connect() {
@@ -45,10 +68,9 @@ public class User extends Thread{
 	public void read() {
 		try {
 			String userInput;
-			BufferedReader stdIn = new BufferedReader(new InputStreamReader(socketClient.getInputStream()));
 			
 	       // ObjectInputStream inFromServer = new ObjectInputStream(socketClient.getInputStream());
-			while ((userInput = stdIn.readLine()) != null) {
+			while ((userInput = is.readLine()) != null) {
 				String[] input = userInput.split(":");
 				newScore(Integer.parseInt(input[0]));
 				theirScore = Integer.parseInt(input[1]);
@@ -61,15 +83,10 @@ public class User extends Thread{
 	}
 	
 	public void send(String message) throws IOException {
-		try {
-			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socketClient.getOutputStream()));
-			System.out.println("Server << " + message);
-			writer.write(message+"/n");
-		//	writer.newLine();
-		//	writer.flush();
-		} catch (IOException e) {
-			
-		}
+		System.out.println("Server << " + message);
+		os.write(message+"/n");
+//	writer.newLine();
+//	writer.flush();
 
 	}
 	

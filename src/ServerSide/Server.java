@@ -1,10 +1,7 @@
+// echo server
 package ServerSide;
 
-
-
-
 import java.io.BufferedReader;
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -12,269 +9,103 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 
+public class Server {
+public static void main(String args[]){
 
-public class Server extends Thread
-{ 
-	
- protected Socket clientSocket1;
- protected Socket clientSocket2;
 
- private static final int PORT = 9005;
- private int score1;
- private int score2;
- public ConnectionHandeler c1;
- public ConnectionHandeler c2;
+    Socket s=null;
+    ServerSocket ss2=null;
+    System.out.println("Server Listening......");
+    try{
+        ss2 = new ServerSocket(9005); // can also use static final PORT_NUM , when defined
 
- //private ArrayList<Integer> usersScores;
- 
- public static void main(String[] args) throws IOException 
-   { 
-    ServerSocket serverSocket = null; 
-    
-    try { 
-         serverSocket = new ServerSocket(PORT); 
-         System.out.println ("Connection Socket Created");
-         while (true)
-		     {
-		      System.out.println ("Waiting for Connection");
-		      new Server (serverSocket).start(); 
-		      System.out.println ("Connection");
-
-		     } 
-        } 
-    catch (IOException e) 
-        { 
-         System.err.println("Could not listen on port: " + PORT); 
-         System.exit(1); 
-        } 
-    finally
-        {
-         try {
-              serverSocket.close(); 
-             }
-         catch (IOException e)
-             { 
-              System.err.println("Could not close port: " + PORT); 
-              System.exit(1); 
-             } 
-        }
-   }
-
- public Server (ServerSocket socket)
-   {
-    
-    try {
-    	
-    	clientSocket1 = socket.accept();
-	    //System.out.println ("Waiting for Client #2 Connection");
-		//clientSocket2 = socket.accept();
-    	
-    	
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-  
-    score1 = 0;
-    score2 = 0;
-  //  usersScores = new ArrayList<Integer>(2);
-   }
-
- public void run()
-   {
-    System.out.println ("New Communication Thread Started");
-    
-   // while(true){
-    	//  c2 =  new ConnectionHandeler(clientSocket1);
-    	//  c2.start();
-    	  c1 =  new ConnectionHandeler(clientSocket1);
-    	  c1.start();
-    //	c1.setTheirScore(c2.getYourScore());
-    	//c2.setTheirScore(c1.getYourScore());
-    //}
-    
-    /*
-    while(true){
-    	
-    	// player 1
-    	
-    	try { 
-	         PrintWriter out1 = new PrintWriter(clientSocket1.getOutputStream(), true); 
-	         BufferedReader in1 = new BufferedReader( new InputStreamReader(clientSocket1.getInputStream())); 
-		     String inputLine = in1.readLine(); 
-		     System.out.println ("Client " + 1 + " >> " + inputLine); 
-	         System.out.println ("Client " + 1 + " << " + score1);
-	         if (inputLine.equals("Bye")) 
-	                  break; 	
-	         out1.close(); 
-	         in1.close(); 
-	         clientSocket1.close(); 
-	        } 
-	    catch (IOException e) 
-	        { 
-	         System.err.println("Problem with Communication Server");
-	        }
-    	
-    	//player 2
-    	
-    	try { 
-	         PrintWriter out2 = new PrintWriter(clientSocket2.getOutputStream(), true); 
-	         BufferedReader in2 = new BufferedReader( new InputStreamReader(clientSocket2.getInputStream())); 
-		     String inputLine = in2.readLine(); 
-		     System.out.println ("Client " + 1 + " >> " + inputLine); 
-	         System.out.println ("Client " + 1 + " << " + score1);
-	         if (inputLine.equals("Bye")) 
-	                  break; 	
-	         out2.close(); 
-	         in2.close(); 
-	         clientSocket1.close(); 
-	        } 
-	    catch (IOException e) 
-	        { 
-	         System.err.println("Problem with Communication Server"); 
-	        }
-   	
-    	
-    	
-    	
-    }*/
-    
     }
-	 private class ConnectionHandeler extends Thread implements Closeable{
-			Socket leSocket;
-			boolean p = true;
-			private int yourScore;
-			private int theirScore;
-			ConnectionHandeler(Socket socket){
-				this.leSocket = socket;
-				yourScore = 0;
-				theirScore = 0;
-			     //System.out.println ("Created CH "); 
-			     System.out.println("Client "+socket+" has connected.");
+    catch(IOException e){
+    e.printStackTrace();
+    System.out.println("Server error");
 
-			}
-			public void run(){
-			     System.out.println (" CH Running"); 
+    }
 
-				while(true){
-				      
-				
-				try { 
-			         PrintWriter out1 = new PrintWriter(leSocket.getOutputStream()); 
-			         BufferedReader in1 = new BufferedReader( new InputStreamReader(leSocket.getInputStream())); 
-			         System.out.println(in1.readLine());
-				    /* setYourScore( Integer.parseInt(in1.readLine())); 
-				     System.out.println ("Client " + 1 + " >> " + yourScore); 
-			         System.out.println ("Client " + 1 + " << " + getTheirScore());
-			         out1.println(yourScore + ":" + getTheirScore()); 
-			         *///clientSocket1.close(); 
-			        } 
-			    catch (IOException e) 
-			        { 
-			         System.err.println("Problem with Communication Server: ");
-			         e.printStackTrace();
-			        }
-				}
-			}
-			@Override
-			public void close(){
-				p= false;
-			}
-			
-			public void setYourScore(int newScore){ 
-				yourScore = newScore;
-			}
-			public int getYourScore(){ 
-				return theirScore;
-			}
-			public void setTheirScore(int newScore){
-				theirScore = newScore;
-			}
-			public int getTheirScore(){
-			 
-				return theirScore;
-			}
-	   }
-}	
+    while(true){
+        try{
+            s= ss2.accept();
+            System.out.println("connection Established");
+            ServerThread st=new ServerThread(s);
+            st.start();
 
-/*
-import java.io.*;
-import java.util.*;
-import java.net.*;	
-public class Server extends Thread{
-	
-			private static final int ServerPort = 63400;
-			private static ServerSocket serverSocket;		
-		    private static BufferedReader bufferedReader;
-		    private static InetAddress hostAddress; 
-		    private Socket socket;
-		    private ArrayList<User> users = new ArrayList<User>();
-		    
-		    public Server(){
-		    	
-		    	// Wait for client to connect on 63400
-		    	try{
-		    		hostAddress = InetAddress.getLocalHost();
-		    		
-		    	}
-		    	catch(UnknownHostException e){
-		    		System.out.println("Could not get the host address.");	
-		    		return;
-		     	}
-		    	System.out.println("Server host address is: "+hostAddress);
+        }
 
-		        try{
-		            serverSocket = new ServerSocket(ServerPort, 0, hostAddress);
-		        }
-		        catch(IOException e)
-		        {    	
-		            System.out.println("Server Socket failure");
-		        }
-		        
-		        System.out.println("Socket "+serverSocket+" created.");
-		    	
-		    }
-		    
-		    public static void main(String[] args)
-		    {	
-		    	Server server = new Server();
-		    	server.run();
-		    }
-		    
-		    public void run()
-		        {
-		            // Announce the starting of the process
-		            System.out.println("Game has been started.");
-		            // Enter the main loop
-		            while(true)
-		            {
-		                for(int i = 0;i < users.size();i++)
-		                {
-		                	
-		                	
-		    
-		                 
-		    
-		                }
-		    
-		                try{
-		                  socket = serverSocket.accept();
-		                }
-		                catch(IOException e)
-		                {
-		                    System.out.println("Could not get a client.");
-		                }
-		                // Client has connected
-		                System.out.println("Client "+socket+" has connected.");
-		    
-		                // Add user to list
-		    
-		               // users.add(new User(socket, new Player() ));
-		    
-		            }
+    catch(Exception e){
+        e.printStackTrace();
+        System.out.println("Connection Error");
 
+    }
+    }
 
-		        }
 }
 
-*/
+}
+
+class ServerThread extends Thread{  
+
+    String line=null;
+    BufferedReader  is = null;
+    PrintWriter os=null;
+    Socket s=null;
+
+    public ServerThread(Socket s){
+        this.s=s;
+    }
+
+    public void run() {
+    try{
+        is= new BufferedReader(new InputStreamReader(s.getInputStream()));
+        os=new PrintWriter(s.getOutputStream());
+
+    }catch(IOException e){
+        System.out.println("IO error in server thread");
+    }
+
+    try {
+        line=is.readLine();
+        System.out.println("Client >> "+line);
+        while(line.compareTo("QUIT")!=0){
+            os.println(line+":" + line);
+            os.flush();
+            System.out.println("Client << "+line + ":" +line);
+            line=is.readLine();
+        }   
+    } catch (IOException e) {
+
+        line=this.getName(); //reused String line for getting thread name
+        System.out.println("IO Error/ Client "+line+" terminated abruptly");
+    }
+    catch(NullPointerException e){
+        line=this.getName(); //reused String line for getting thread name
+        System.out.println("Client "+line+" Closed");
+    }
+
+    finally{    
+    try{
+        System.out.println("Connection Closing..");
+        if (is!=null){
+            is.close(); 
+            System.out.println(" Socket Input Stream Closed");
+        }
+
+        if(os!=null){
+            os.close();
+            System.out.println("Socket Out Closed");
+        }
+        if (s!=null){
+        s.close();
+        System.out.println("Socket Closed");
+        }
+
+        }
+    catch(IOException ie){
+        System.out.println("Socket Close Error");
+    }
+    }//end finally
+    }
+}
