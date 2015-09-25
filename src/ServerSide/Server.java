@@ -4,13 +4,14 @@ package ServerSide;
 
 
 import java.io.BufferedReader;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
+
+
 
 public class Server extends Thread
 { 
@@ -19,7 +20,12 @@ public class Server extends Thread
  protected Socket clientSocket2;
 
  private static final int PORT = 9005;
- private ArrayList<Integer> usersScores;
+ private int score1;
+ private int score2;
+ public ConnectionHandeler c1;
+ public ConnectionHandeler c2;
+
+ //private ArrayList<Integer> usersScores;
  
  public static void main(String[] args) throws IOException 
    { 
@@ -28,18 +34,13 @@ public class Server extends Thread
     try { 
          serverSocket = new ServerSocket(PORT); 
          System.out.println ("Connection Socket Created");
-         try { 
-              while (true)
-                 {
-                  System.out.println ("Waiting for Connection");
-                  new Server (serverSocket.accept()); 
-                 }
-             } 
-         catch (IOException e) 
-             { 
-              System.err.println("Accept failed."); 
-              System.exit(1); 
-             } 
+         while (true)
+		     {
+		      System.out.println ("Waiting for Connection");
+		      new Server (serverSocket).start(); 
+		      System.out.println ("Connection");
+
+		     } 
         } 
     catch (IOException e) 
         { 
@@ -59,28 +60,50 @@ public class Server extends Thread
         }
    }
 
- private Server (Socket clientSoc)
+ public Server (ServerSocket socket)
    {
-    clientSocket1 = clientSoc;
-    usersScores = new ArrayList<Integer>(2);
-    start();
+    
+    try {
+    	
+    	clientSocket1 = socket.accept();
+	    //System.out.println ("Waiting for Client #2 Connection");
+		//clientSocket2 = socket.accept();
+    	
+    	
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+  
+    score1 = 0;
+    score2 = 0;
+  //  usersScores = new ArrayList<Integer>(2);
    }
 
  public void run()
    {
     System.out.println ("New Communication Thread Started");
-    usersScores.add(0);
-    usersScores.add(0);
+    
+   // while(true){
+    	//  c2 =  new ConnectionHandeler(clientSocket1);
+    	//  c2.start();
+    	  c1 =  new ConnectionHandeler(clientSocket1);
+    	  c1.start();
+    //	c1.setTheirScore(c2.getYourScore());
+    	//c2.setTheirScore(c1.getYourScore());
+    //}
+    
+    /*
     while(true){
     	
-    for(int i = 0; i < 2; i++){
+    	// player 1
+    	
     	try { 
 	         PrintWriter out1 = new PrintWriter(clientSocket1.getOutputStream(), true); 
 	         BufferedReader in1 = new BufferedReader( new InputStreamReader(clientSocket1.getInputStream())); 
 		     String inputLine = in1.readLine(); 
-		     System.out.println ("Client " + i + " >> " + inputLine); 
-	         System.out.println ("Client " + i + " << " + usersScores.get(i)); 
-	         out1.println(usersScores.get(1)); 
+		     System.out.println ("Client " + 1 + " >> " + inputLine); 
+	         System.out.println ("Client " + 1 + " << " + score1);
 	         if (inputLine.equals("Bye")) 
 	                  break; 	
 	         out1.close(); 
@@ -90,12 +113,90 @@ public class Server extends Thread
 	    catch (IOException e) 
 	        { 
 	         System.err.println("Problem with Communication Server");
-	         System.exit(1); 
 	        }
+    	
+    	//player 2
+    	
+    	try { 
+	         PrintWriter out2 = new PrintWriter(clientSocket2.getOutputStream(), true); 
+	         BufferedReader in2 = new BufferedReader( new InputStreamReader(clientSocket2.getInputStream())); 
+		     String inputLine = in2.readLine(); 
+		     System.out.println ("Client " + 1 + " >> " + inputLine); 
+	         System.out.println ("Client " + 1 + " << " + score1);
+	         if (inputLine.equals("Bye")) 
+	                  break; 	
+	         out2.close(); 
+	         in2.close(); 
+	         clientSocket1.close(); 
+	        } 
+	    catch (IOException e) 
+	        { 
+	         System.err.println("Problem with Communication Server"); 
+	        }
+   	
+    	
+    	
+    	
+    }*/
+    
     }
-    }
-   }
-} 
+	 private class ConnectionHandeler extends Thread implements Closeable{
+			Socket leSocket;
+			boolean p = true;
+			private int yourScore;
+			private int theirScore;
+			ConnectionHandeler(Socket socket){
+				this.leSocket = socket;
+				yourScore = 0;
+				theirScore = 0;
+			     //System.out.println ("Created CH "); 
+			     System.out.println("Client "+socket+" has connected.");
+
+			}
+			public void run(){
+			     System.out.println (" CH Running"); 
+
+				while(true){
+				      
+				
+				try { 
+			         PrintWriter out1 = new PrintWriter(leSocket.getOutputStream()); 
+			         BufferedReader in1 = new BufferedReader( new InputStreamReader(leSocket.getInputStream())); 
+			         System.out.println(in1.readLine());
+				    /* setYourScore( Integer.parseInt(in1.readLine())); 
+				     System.out.println ("Client " + 1 + " >> " + yourScore); 
+			         System.out.println ("Client " + 1 + " << " + getTheirScore());
+			         out1.println(yourScore + ":" + getTheirScore()); 
+			         *///clientSocket1.close(); 
+			        } 
+			    catch (IOException e) 
+			        { 
+			         System.err.println("Problem with Communication Server: ");
+			         e.printStackTrace();
+			        }
+				}
+			}
+			@Override
+			public void close(){
+				p= false;
+			}
+			
+			public void setYourScore(int newScore){ 
+				yourScore = newScore;
+			}
+			public int getYourScore(){ 
+				return theirScore;
+			}
+			public void setTheirScore(int newScore){
+				theirScore = newScore;
+			}
+			public int getTheirScore(){
+			 
+				return theirScore;
+			}
+	   }
+}	
+
 /*
 import java.io.*;
 import java.util.*;

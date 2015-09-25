@@ -49,9 +49,13 @@ public class User extends Thread{
 			
 	       // ObjectInputStream inFromServer = new ObjectInputStream(socketClient.getInputStream());
 			while ((userInput = stdIn.readLine()) != null) {
-				System.out.println(userInput);
-				System.out.println("Server >> " + userInput);
-			}
+				String[] input = userInput.split(":");
+				newScore(Integer.parseInt(input[0]));
+				theirScore = Integer.parseInt(input[1]);
+				System.out.println("Server >> " + "Your Score" + input[0] + "Their Score" + input[1]);
+				
+				
+			}		
 		} catch (IOException e) {
 		}
 	}
@@ -61,10 +65,11 @@ public class User extends Thread{
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socketClient.getOutputStream()));
 			
 			System.out.println("Server << " + message);
-			writer.write(message);
-			writer.newLine();
-			writer.flush();
+			writer.write(message+"/n");
+		//	writer.newLine();
+		//	writer.flush();
 		} catch (IOException e) {
+			
 		}
 
 	}
@@ -77,29 +82,35 @@ public class User extends Thread{
 	public void run() {
 		// Creating a User object
 		//User client = new User("localhost", port, player);
-			this.connect();
+		this.connect();
 		while (connected){
-			while(true){
-		try {
-
-			if(player.getScore() > score){
-				this.send("hi");
-				this.read();
+			try {
+				send(/*Integer.toString(player.getScore())*/ "Hi");
+				//wait(100);
+			//	read();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-
-		} catch (UnknownHostException e) {
-			System.err.println("Host unknown. Cannot establish connection");
-		} catch (IOException e) {
-			System.err
-					.println("Cannot establish connection. Server may not be up."
-							+ e.getMessage());
-		}
-		}
+/*
+			try {
+				System.out.println("Looping");
+				if(player.getScore() > score){
+					System.out.println("Sending Scores");
+						send(Integer.toString(score));
+					//this.read();
+				}
+			this.read();	
+			} catch (UnknownHostException e) {
+				System.err.println("Host unknown. Cannot establish connection");
+			} catch (IOException e) {
+				System.err.println("Cannot establish connection. Server may not be up."+ e.getMessage());
+			}*/ 
 		}
 	}
 	
-	public void increaseScore(){
-		score++;
+	public void newScore(int score){
+		this.score = score;
 	}
 	
 	public int getScore(){
@@ -107,37 +118,7 @@ public class User extends Thread{
 		
 	}
 	
+	public int getEScore(){
+		return theirScore;	
+	}
 }
-/*
- * import gameObjects.Player;
- * 
- * import java.io.*; import java.util.*; import java.net.*;
- * 
- * public class User extends Thread{
- * 
- * private Socket socket; private boolean connected; private Player player;
- * private ObjectInputStream in;
- * 
- * public void run() { try{ in = new ObjectInputStream(socket.getInputStream());
- * } catch(IOException e) {
- * System.out.println("Could not get input stream from "+toString()); return; }
- * System.out.println(socket+" has connected input."); // Enter process loop
- * while(true){
- * 
- * 
- * } }
- * 
- * public void purge() { // Close everything try{ connected = false;
- * socket.close(); }
- * 
- * catch(IOException e) { System.out.println("Could not purge "+socket+"."); } }
- * 
- * public User(Socket newSocket, Player player){ socket = newSocket; connected =
- * true; this.player = player; }
- * 
- * public boolean isConnected() { return connected; }
- * 
- * public Socket getSocket() { return socket; }
- * 
- * public String toString() { return new String(socket.toString()); } }
- */
