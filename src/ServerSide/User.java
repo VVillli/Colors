@@ -65,7 +65,7 @@ public class User extends Thread{
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socketClient.getOutputStream()));
 			
 			System.out.println("Server << " + message);
-			writer.write(message);
+			writer.write(message+"/n");
 		//	writer.newLine();
 		//	writer.flush();
 		} catch (IOException e) {
