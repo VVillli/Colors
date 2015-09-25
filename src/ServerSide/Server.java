@@ -10,6 +10,8 @@ import java.net.Socket;
 
 
 public class Server {
+public int score1;
+public int score2;
 public static void main(String args[]){
 
 
