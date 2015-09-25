@@ -9,35 +9,48 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.Serializable;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class User extends Thread{
 
+	
 	private String hostname;
 	private int port;
 	Socket socketClient;
 	private Player player;
+	private int score;
+	private int theirScore;
+	boolean connected;
 	public User(String hostname, int port, Player player) {
 		this.hostname = hostname;
 		this.port = port;
 		this.player = player;
+		score = 0;
+		theirScore = 0;
+		connected = false;
 	}
 
-	public void connect() throws UnknownHostException, IOException {
+	public void connect() {
 		System.out.println("Attempting to connect to " + hostname + ":" + port);
-		socketClient = new Socket(hostname, port);
-		System.out.println("Connection Established");
+		try {
+			socketClient = new Socket(hostname, port);
+			System.out.println("Connection Established");
+			connected = true;
+		} catch (IOException e) {System.out.println("Connection Failed, Continuing"); return;}
+		
 	}
 
 	public void read() {
 		try {
 			String userInput;
-			BufferedReader stdIn = new BufferedReader(new InputStreamReader(
-					socketClient.getInputStream()));
-			System.out.print("Server >> ");
+			BufferedReader stdIn = new BufferedReader(new InputStreamReader(socketClient.getInputStream()));
+			
+	       // ObjectInputStream inFromServer = new ObjectInputStream(socketClient.getInputStream());
 			while ((userInput = stdIn.readLine()) != null) {
 				System.out.println(userInput);
+				System.out.println("Server >> " + userInput);
 			}
 		} catch (IOException e) {
 		}
@@ -45,8 +58,9 @@ public class User extends Thread{
 
 	public void send(String message) throws IOException {
 		try {
-			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-					socketClient.getOutputStream()));
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socketClient.getOutputStream()));
+			
+			System.out.println("Server << " + message);
 			writer.write(message);
 			writer.newLine();
 			writer.flush();
@@ -62,15 +76,16 @@ public class User extends Thread{
 
 	public void run() {
 		// Creating a User object
-		User client = new User("localhost", port, player);
-		while (true){
+		//User client = new User("localhost", port, player);
+			this.connect();
+		while (connected){
+			while(true){
 		try {
-			// trying to establish connection to the server
-			client.connect();
-			// asking server for time
-			client.send("Hello");
-			// waiting to read response from server
-			client.read();
+
+			if(player.getScore() > score){
+				this.send("hi");
+				this.read();
+			}
 
 		} catch (UnknownHostException e) {
 			System.err.println("Host unknown. Cannot establish connection");
@@ -80,7 +95,18 @@ public class User extends Thread{
 							+ e.getMessage());
 		}
 		}
+		}
 	}
+	
+	public void increaseScore(){
+		score++;
+	}
+	
+	public int getScore(){
+		return score;
+		
+	}
+	
 }
 /*
  * import gameObjects.Player;

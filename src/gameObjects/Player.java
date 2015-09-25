@@ -40,9 +40,11 @@ public class Player {
 	private long firingTimer;
 	private long firingDelay;
 	
+	
 	//Server
 	private User user;
-	private PrintWriter print;
+	private int score;
+
 	public Player(Color c){
 		this.c = c;
 		
@@ -68,9 +70,9 @@ public class Player {
 		firingDelay = 0;
 		
 		try {
-			user = new User(InetAddress.getLocalHost().getHostName(), 9000, this);
+			user = new User(InetAddress.getLocalHost().getHostName(), 9005, this);
 			user.run();
-		} catch (UnknownHostException e) {	e.printStackTrace();} 
+		} catch (UnknownHostException e) {} 
 		}
 	
 	public void setUp(boolean b){up = b;}
@@ -132,5 +134,13 @@ public class Player {
 		
 		
 		g.setTransform(backup);
+	}
+	
+	public int getScore(){
+		return score;
+	}
+	
+	public void increaseScore(){
+		score++;
 	}
 }

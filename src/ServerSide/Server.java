@@ -6,6 +6,7 @@ package ServerSide;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -13,9 +14,13 @@ import java.util.ArrayList;
 
 public class Server extends Thread
 { 
- protected Socket clientSocket;
- private static final int PORT = 9000;
- private ArrayList<User> users;
+	
+ protected Socket clientSocket1;
+ protected Socket clientSocket2;
+
+ private static final int PORT = 9005;
+ private ArrayList<Integer> usersScores;
+ 
  public static void main(String[] args) throws IOException 
    { 
     ServerSocket serverSocket = null; 
@@ -56,35 +61,31 @@ public class Server extends Thread
 
  private Server (Socket clientSoc)
    {
-    clientSocket = clientSoc;
-    users = new ArrayList<User>();
+    clientSocket1 = clientSoc;
+    usersScores = new ArrayList<Integer>(2);
     start();
    }
 
  public void run()
    {
     System.out.println ("New Communication Thread Started");
-    for(int i = 0; i < users.size(); i++){
-	    try { 
-	         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), 
-	                                      true); 
-	         BufferedReader in = new BufferedReader( 
-	                 new InputStreamReader( clientSocket.getInputStream())); 
-	
-	         String inputLine; 
-	
-	         while ((inputLine = in.readLine()) != null) 
-	             { 
-	              System.out.println (users.get(i).getPlayer() + " >> " + inputLine); 
-	              out.println(inputLine); 
-	
-	              if (inputLine.equals("Bye.")) 
-	                  break; 
-	             } 
-	
-	         out.close(); 
-	         in.close(); 
-	         clientSocket.close(); 
+    usersScores.add(0);
+    usersScores.add(0);
+    while(true){
+    	
+    for(int i = 0; i < 2; i++){
+    	try { 
+	         PrintWriter out1 = new PrintWriter(clientSocket1.getOutputStream(), true); 
+	         BufferedReader in1 = new BufferedReader( new InputStreamReader(clientSocket1.getInputStream())); 
+		     String inputLine = in1.readLine(); 
+		     System.out.println ("Client " + i + " >> " + inputLine); 
+	         System.out.println ("Client " + i + " << " + usersScores.get(i)); 
+	         out1.println(usersScores.get(1)); 
+	         if (inputLine.equals("Bye")) 
+	                  break; 	
+	         out1.close(); 
+	         in1.close(); 
+	         clientSocket1.close(); 
 	        } 
 	    catch (IOException e) 
 	        { 
@@ -93,6 +94,7 @@ public class Server extends Thread
 	        }
     }
     }
+   }
 } 
 /*
 import java.io.*;
