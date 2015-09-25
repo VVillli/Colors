@@ -43,13 +43,9 @@ public class Player {
 	
 	//Server
 	private User user;
-<<<<<<< HEAD
 	private PrintWriter print;
 	
-=======
 	private int score;
-
->>>>>>> 5e7f499b283f3724c2d226a0f10c7dfad2419304
 	public Player(Color c){
 		this.c = c;
 		
