@@ -98,7 +98,7 @@ public class User extends Thread{
 	public void run() {
 		
 		 try {
-			 	socketClient=new Socket(hostname, 4445); // You can use static final constant PORT_NUM
+			 	socketClient=new Socket(hostname, 9005); // You can use static final constant PORT_NUM
 		        br= new BufferedReader(new InputStreamReader(System.in));
 		        is=new BufferedReader(new InputStreamReader(socketClient.getInputStream()));
 		        os= new PrintWriter(socketClient.getOutputStream());
@@ -112,10 +112,11 @@ public class User extends Thread{
 
 		    System.out.println("Client Address : "+ hostname);
 		    System.out.println("Enter Data to echo Server ( Enter QUIT to end):");
-
+		    while(connected){
 		    String response=null;
 		    try{
 		        line= Integer.toString(player.getScore());// br.readLine(); 
+		        System.out.println("Current Score: "+line );
 		        while(line.compareTo("QUIT")!=0){
 		        		try {
 		        		    Thread.sleep(1000);                 //1000 milliseconds is one second.
@@ -131,7 +132,7 @@ public class User extends Thread{
 		                newScore(Integer.parseInt(res[0]));
 						theirScore = Integer.parseInt(res[1]);
 		                
-		               // line=br.readLine();
+		                line=Integer.toString(player.getScore());
 		        	}
 		          }
 
@@ -159,41 +160,9 @@ public class User extends Thread{
 				}
 		                System.out.println("Connection Closed");
 		    }
+		    }
 
 		    }
-		    /*
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		// Creating a User object
-		//User client = new User("localhost", port, player);
-		System.out.println("Server Connectioing");
-		this.connect();
-		while (connected){
-			
-				//if(player.getScore() > score){
-					send("1");
-			//	}
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-					//wait(100);
-				//	read();
-				
-				read();
-		
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}	
-				
-		}
-	}*/
 	
 	public void newScore(int score){
 		this.score = score;

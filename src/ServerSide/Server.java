@@ -10,11 +10,16 @@ import java.net.Socket;
 
 
 public class Server {
+	
+	public static int score1;
+	public static int score3;
 public static void main(String args[]){
 
 
  Socket s=null;
  ServerSocket ss2=null;
+ score1 = 0;
+ score3 = 0;
  System.out.println("Server Listening......");
  try{
      ss2 = new ServerSocket(9005); // can also use static final PORT_NUM , when defined
@@ -25,14 +30,15 @@ public static void main(String args[]){
  System.out.println("Server error");
 
  }
-
+ int num = 0;
+ 
  while(true){
      try{
          s= ss2.accept();
          System.out.println("connection Established");
-         ServerThread st=new ServerThread(s);
+         ServerThread st=new ServerThread(s, num);
          st.start();
-
+         num++;
      }
 
  catch(Exception e){
@@ -52,8 +58,9 @@ class ServerThread extends Thread{
  BufferedReader  is = null;
  PrintWriter os=null;
  Socket s=null;
-
- public ServerThread(Socket s){
+ int num;
+ public ServerThread(Socket s, int number){
+	 num = number;
      this.s=s;
  }
 
@@ -71,11 +78,22 @@ class ServerThread extends Thread{
      System.out.println("Reading");
 
      line = is.readLine();
-     System.out.println("Client >> "+line);
+     
+     System.out.println("Client " + num + " >> "+line);
      while(line.compareTo("QUIT")!=0){
-         os.println(line);
+    	 
+    	 String line2;
+    	 if(num == 1){
+    		 Server.score1 = Integer.parseInt(line);
+    		 line2 = Integer.toString(Server.score3);
+    	 }
+    	 else{
+    		 Server.score3 = Integer.parseInt(line);
+    		 line2 = Integer.toString(Server.score1);
+    	 }
+         os.println(line + ":"+ line2);
          os.flush();
-         System.out.println("Client << "+line);
+         System.out.println("Client " + num+ "<< "+line);
          line=is.readLine();
      }   
  } catch (IOException e) {
