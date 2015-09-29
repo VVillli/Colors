@@ -1,5 +1,6 @@
 package gameObjects;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 
 public class Target {
@@ -14,15 +15,11 @@ public class Target {
 		r = 10;
 	}
 	
-	public boolean update(int x, int y){
-		if((x > this.x && x < this.x+(r*2)) || (y > this.y && y < this.y + (r*2))){
-			return true;
-		}
-		
-		return false;
-	}
+	public int getX(){return x;}
+	public int getY(){return y;}
 	
 	public void draw(Graphics2D g){
+		g.setColor(Color.WHITE);
 		g.fillOval(x, y, r*2, r*2);
 	}
 }

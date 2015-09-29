@@ -2,17 +2,14 @@ package gameObjects;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetAddress;
-import java.net.Socket;
 import java.net.UnknownHostException;
 
-import javax.swing.ImageIcon;
-
-import gameWindow.GamePanel;
+import GameState.GameStateManager;
+import GameState.MainGame;
 import ServerSide.User;
+import gameWindow.GamePanel;
 
 public class Player {
 	
@@ -40,6 +37,7 @@ public class Player {
 	private long firingTimer;
 	private long firingDelay;
 	
+	private GamePanel parent;
 	
 	//Server
 	private User user;
@@ -66,9 +64,11 @@ public class Player {
 		
 		angle = 0;
 		
+		parent = GameStateManager.p;
+		
 		firing = false;
 		firingTimer = System.nanoTime();
-		firingDelay = 0;
+		firingDelay = 500;
 		
 			try {
 				user = new User(InetAddress.getLocalHost().getHostName(), 9005, this);
@@ -113,46 +113,51 @@ public class Player {
 			if(elapsed > firingDelay){
 				firingTimer = System.nanoTime();
 				
-				int transX;
+				/*int transX;
 				int transY;
 				
 				if(angle <= -90){
-					transX = x + 18 + (int)(Math.cos(Math.toRadians(angle))*18);
+					transX = x + (int)(Math.cos(Math.toRadians(angle))*18);
 				}
 				else{
-					transX = x - 18 + (int)(Math.cos(Math.toRadians(angle))*18);
+					transX = x - (int)(Math.cos(Math.toRadians(angle))*18);
 				}
 				
 				if(angle > -180 && angle < 0){
-					transY = y + 12 - (int)(Math.sin(Math.toRadians(angle))*12);
+					transY = y + (int)(Math.sin(Math.toRadians(angle))*6);
 				}
 				else{
-					transY = y - 12 + (int)(Math.sin(Math.toRadians(angle))*12);
+					transY = y - (int)(Math.sin(Math.toRadians(angle))*6);
 				}
 				
-				GamePanel.b.add(new Bullet(transX, transY, angle));
+				MainGame.b.add(new Bullet(transX, transY, angle));*/
+				
+				MainGame.b.add(new Bullet(x + 5, y + 5, angle));
 			}
 		}
 	}
 	
 	public void draw(Graphics2D g, int playerType){
-		AffineTransform backup = g.getTransform();
+		/*AffineTransform backup = g.getTransform();
 		AffineTransform trans = new AffineTransform();
 		
-		trans.rotate(Math.toRadians(angle), x + 12, y + 12); 
+		trans.rotate(Math.toRadians(angle), x + 6, y + 12); 
 		g.setTransform(trans);
 		
-		if (playerType == 1)
-		{
-			g.drawImage(new ImageIcon("images/greenDark.png").getImage(), x, y, 24, 24, null);
+		if (playerType == 1){
+			//URL url = parent.getClass().getResource("images/greenDark.png"); 
+			//g.drawImage(ImageIO.read(getClass().getResource("images/greenDark.png")), x, y, 24, 24, null);
 		}
-		else
-		{
-			g.drawImage(new ImageIcon("images/redot.png").getImage(), x, y, 24, 24, null);
+		else{
+			g.drawImage(new ImageIcon("src/images/redot.png").getImage(), x, y, 24, 24, null);
 		}
 		
 		
-		g.setTransform(backup);
+		g.setTransform(backup);*/
+		g.setColor(new Color(68, 223, 60, 70));
+		g.fillOval(x, y, 25, 25);
+		g.setColor(new Color(78, 246, 69, 100));
+		g.fillOval(x + 3, y + 3, 19, 19);
 	}
 	
 	public int getScore(){

@@ -39,21 +39,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 	
 	private Player p;
 	
-	private int mouseX;
-	private int mouseY;
-	
-	public static List<Bullet> b;
-	public static List<Target> t;
-	
 	//game state manager
 	private GameStateManager gsm;
+	
+	
 	
 	public GamePanel(){
 		super();
 		
 		running = false;
-		
-		p = new Player(Color.BLUE);
+		gsm = new GameStateManager(this);
 		
 		setPreferredSize(new Dimension(width, height));
 		setFocusable(true);
@@ -76,22 +71,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		running = true;
 
 		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-		g = (Graphics2D)image.getGraphics();
-		
-		gsm = new GameStateManager();
-		
+		g = (Graphics2D)image.getGraphics();		
 		
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-		
-		
-		
-		
-		b = new ArrayList<Bullet>();
-		t = new ArrayList<Target>();
-		
-		t.add(new Target(30, 30));
 		
 		long startTime;
 		long URDTimeMilli;
@@ -132,36 +116,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 	}
 	
 	public void gameUpdate(){
-		p.update(mouseX, mouseY);
 		gsm.update();
-		
-		for(int i = 0; i < b.size(); i++){
-			boolean remove = b.get(i).update();
-			if(remove){
-				b.remove(i);
-				i--;
-			}
-		}
-		
-		for(int i = 0; i < t.size(); i++){
-			boolean remove = false;
-			
-			for(int j = 0; j < b.size(); j++){
-				remove = t.get(i).update(b.get(j).getX(), b.get(j).getY());
-				if(remove){
-					b.remove(j);
-					count++;
-					p.increaseScore();
-					break;
-				}
-			}
-			
-			if(remove){
-				t.add(new Target((int)(Math.random()*800),(int)(Math.random()*800)));
-				t.remove(i);
-				i--;
-			}
-		}
 	}
 	
 	public void gameRender(){
@@ -170,21 +125,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		
 		g.setColor(Color.WHITE);
 		g.drawString("FPS: " + averageFPS, 10, 20);
-		g.drawString("Score: " + count, 10, 32);
 		
-		for(int i = 0; i < b.size(); i++){
-			b.get(i).draw(g);
-		}
-		
-		for(int i = 0; i < t.size(); i++){
-			t.get(i).draw(g);
-		}
-		
-		p.draw(g, 1);
+		gsm.draw(g);
 	}
 	
 	public void gameDraw(){
-		gsm.draw(g);
 		Graphics g2 = this.getGraphics();
 		g2.drawImage(image, 0, 0, null);
 		g2.dispose();
@@ -198,58 +143,22 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		mouseX = e.getX();
-		mouseY = e.getY();
+		gsm.mouseDragged(e);
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		mouseX = e.getX();
-		mouseY = e.getY();
+		gsm.mouseMoved(e);
 	}
 
 	@Override
-	public void keyPressed(KeyEvent e) {
-		
+	public void keyPressed(KeyEvent e) {	
 		gsm.keyPressed(e.getKeyCode());
-		
-		switch(e.getKeyCode()){
-			case KeyEvent.VK_W:
-				p.setUp(true);
-				break;
-			case KeyEvent.VK_A:
-				p.setLeft(true);
-				break;
-			case KeyEvent.VK_S:
-				p.setDown(true);
-				break;
-			case KeyEvent.VK_D:
-				p.setRight(true);
-				break;
-			default:
-				break;
-		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		gsm.keyReleased(e.getKeyCode());
-		switch(e.getKeyCode()){
-		case KeyEvent.VK_W:
-			p.setUp(false);
-			break;
-		case KeyEvent.VK_A:
-			p.setLeft(false);
-			break;
-		case KeyEvent.VK_S:
-			p.setDown(false);
-			break;
-		case KeyEvent.VK_D:
-			p.setRight(false);
-			break;
-		default:
-			break;
-	}
 	}
 
 	@Override
@@ -266,11 +175,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		p.setFiring(true);
+		gsm.mousePressed(e);
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		p.setFiring(false);
+		gsm.mouseReleased(e);
 	}
 }

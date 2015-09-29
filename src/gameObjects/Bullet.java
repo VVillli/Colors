@@ -1,10 +1,8 @@
 package gameObjects;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.geom.AffineTransform;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.ImageIcon;
 
@@ -32,7 +30,7 @@ public class Bullet {
 		this.y = y;
 		this.angle = angle;
 		
-		speed = 30;
+		speed = 20;
 		
 		double rad = Math.toRadians(angle);
 		dx = (int) (Math.cos(rad)*speed);
@@ -67,19 +65,21 @@ public class Bullet {
 			}
 		}
 		
-		if(x < 0 || x > GamePanel.width - 30 || y < -10 || y > GamePanel.height - 55){
+		if(x < 0 || x > GamePanel.width || y < 0 || y > GamePanel.height){
 			return true;
 		}
 		return false;
 	}
 	
 	public void draw(Graphics2D g){
-		AffineTransform backup = g.getTransform();
+		/*AffineTransform backup = g.getTransform();
 		AffineTransform trans = new AffineTransform();
-		trans.rotate(Math.toRadians(angle), x, y); 
+		trans.rotate(Math.toRadians(angle), x + 24, y + 14); 
 		g.setTransform(trans);
 		g.drawImage(images[currentImage], x, y, 43, 14, null);
 		
-		g.setTransform(backup);
+		g.setTransform(backup);*/
+		g.setColor(Color.GREEN);
+		g.fillOval(x, y, 10, 10);
 	}
 }

@@ -4,6 +4,7 @@ import TitleMap.Background;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
 public class MenuState extends GameState{
 	
@@ -30,7 +31,7 @@ public class MenuState extends GameState{
 		try{
 			
 			bg = new Background("images/background.png", 1);
-			bg.setVector(-.1, 0);
+			bg.setVector(-8, 0);
 			
 			titleColor = new Color(128, 0, 0);
 			titleFont = new Font("Century Gothic",
@@ -129,5 +130,29 @@ public class MenuState extends GameState{
 		
 	
 	public void keyReleased(int k) {}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

@@ -7,6 +7,7 @@ import gameWindow.GamePanel;
 import java.awt.image.*;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 import java.awt.*;
 
@@ -54,30 +55,15 @@ public class Background {
 		x += dx;
 		y += dy;
 		
-		
+		if(x < -800){
+			x = 0;
+		}
 	}
 	
 	public void draw(Graphics2D g){
 		
-		g.drawImage(image, (int)x, (int)y, null);
-		if (x < 0){
-			g.drawImage(
-					image, 
-					(int)x + GamePanel.WIDTH,
-					(int)y,
-					null
-					
-					);
-		}
-		
-		if(x>0){
-			g.drawImage(
-					image,
-					(int)x - GamePanel.WIDTH,
-					(int)y,
-					null
-					);
-		}
+		g.drawImage(new ImageIcon("images/background.png").getImage(), (int)x, (int)y, 800,800, null);
+		g.drawImage(new ImageIcon("images/background.png").getImage(), (int)x + 800, (int)y, 800,800, null);
 	}
 	
 	
