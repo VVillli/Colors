@@ -62,8 +62,8 @@ public class Background {
 		g.drawImage(new ImageIcon("images/background.png").getImage(), (int)x + 800, (int)y, 800,800, null);
 
 		
-		g.drawImage(new ImageIcon("images/colorsscrolling.jpg").getImage(), (int)x, (int)y, 800,800, null);
-		g.drawImage(new ImageIcon("images/colorsscrolling.jpg").getImage(), (int)x + 800, (int)y, 800,800, null);
+		//g.drawImage(new ImageIcon("images/colorsscrolling.jpg").getImage(), (int)x, (int)y, 800,800, null);
+		//g.drawImage(new ImageIcon("images/colorsscrolling.jpg").getImage(), (int)x + 800, (int)y, 800,800, null);
 		
 		
 	}

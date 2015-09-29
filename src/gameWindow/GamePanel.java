@@ -2,6 +2,7 @@ package gameWindow;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -121,6 +122,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		g.setColor(new Color(30,30,30));
 		g.fillRect(0, 0, width, height);
 		
+		g.setFont(new Font("Arial", Font.PLAIN, 12));
 		g.setColor(Color.WHITE);
 		g.drawString("FPS: " + averageFPS, 10, 20);
 		
