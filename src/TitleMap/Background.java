@@ -22,8 +22,7 @@ public class Background {
 	
 	private double moveScale;
 	
-	public Background (String s, double ms)
-	{
+	public Background (String s, double ms){
 		/*try{
 			image = ImageIO.read(
 			getClass().getResourceAsStream(s)		
@@ -33,8 +32,7 @@ public class Background {
 		catch(Exception e){
 			e.printStackTrace();
 			
-		}
-		*/
+		}*/
 
 	}
 	
@@ -44,8 +42,7 @@ public class Background {
 		
 	}
 	
-	public void setVector(double dx	, double dy)
-	{
+	public void setVector(double dx	, double dy){
 		this.dx = dx;
 		this.dy = dy;
 		
@@ -61,7 +58,6 @@ public class Background {
 	}
 	
 	public void draw(Graphics2D g){
-		
 		g.drawImage(new ImageIcon("images/background.png").getImage(), (int)x, (int)y, 800,800, null);
 		g.drawImage(new ImageIcon("images/background.png").getImage(), (int)x + 800, (int)y, 800,800, null);
 	}
