@@ -6,6 +6,8 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
+import javax.swing.ImageIcon;
+
 public class MenuState extends GameState{
 	
 	private Background bg;
@@ -30,15 +32,15 @@ public class MenuState extends GameState{
 		
 		try{
 			
-			bg = new Background("images/background.png", 1);
-			bg.setVector(-8, 0);
+			bg = new Background("images/colorsscrolling.jpg", 1);
+			bg.setVector(-4, 0);
 			
 			titleColor = new Color(128, 0, 0);
 			titleFont = new Font("Century Gothic",
 					Font.PLAIN, 28
 					);
 			
-			font = new Font("Arial", Font.PLAIN, 12);
+			font = new Font("Arial", Font.PLAIN, 50);
 			
 			
 			
@@ -60,10 +62,13 @@ public class MenuState extends GameState{
 		//draw bg
 		bg.draw(g);
 		
+		
+		g.drawImage(new ImageIcon("images/Logo.png").getImage(), 200, 50, 400,400, null);
+		g.drawImage(new ImageIcon("images/Logo.png").getImage(), 200, 50, 400,400, null);
 		//draw title
 		g.setColor(titleColor);
 		g.setFont(titleFont);
-		g.drawString("Colors", 80, 70);
+		//g.drawString("Colors", 80, 70);
 		
 		//draw menu options
 		g.setFont(font);
@@ -78,7 +83,7 @@ public class MenuState extends GameState{
 			else {
 				g.setColor(Color.BLACK);
 			}
-			g.drawString(options[i], 145, 140 + i * 15);
+			g.drawString(options[i], 350, 450 + i * 60);
 			
 			
 			

@@ -24,9 +24,11 @@ public class MainGame extends GameState{
 	public static List<Target> t;
 	
 	private int score;
+	private Font font;
 	
 	public MainGame(GameStateManager gsm){
 		this.gsm = gsm; 
+		font = new Font("Arial", Font.PLAIN, 12);
 		
 		p = new Player(Color.GREEN);
 		
@@ -69,7 +71,7 @@ public class MainGame extends GameState{
 				
 				if(distX > -10 && distX < 20 && distY > -10 && distY < 20){
 					t.remove(i);
-					t.add(new Target((int)(Math.random()*GamePanel.width),(int)(Math.random()*GamePanel.height)));
+					t.add(new Target((int)(Math.random()*GamePanel.width) - 50,(int)(Math.random()*GamePanel.height)-50));
 					b.remove(j);
 					score++;
 					break;
@@ -88,6 +90,8 @@ public class MainGame extends GameState{
 		}
 		
 		p.draw(g, 1);
+		
+		g.setFont(font);
 		
 		g.setColor(Color.WHITE);
 		g.drawString("Score: " + score, 10, 32);
