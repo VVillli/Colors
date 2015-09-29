@@ -161,11 +161,16 @@ public class Player {
 	}
 	
 	public int getScore(){
+		System.out.println(score);
 		return score;
 	}
 	
 	public void increaseScore(){
 		score++;
-		System.out.println("New Score " +  score);
+		getScore();
+	}
+	
+	public User getUser(){
+		return user;
 	}
 }
