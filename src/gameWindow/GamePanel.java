@@ -37,8 +37,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 	private final int FPS = 60;
 	private int averageFPS;
 	
-	private Player p;
-	
 	//game state manager
 	private GameStateManager gsm;
 	
@@ -125,8 +123,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 		
 		g.setColor(Color.WHITE);
 		g.drawString("FPS: " + averageFPS, 10, 20);
-		g.drawString("Score: " + p.getScore(), 10, 32);
-		g.drawString("Opponent Score: " + p.getUser().getEScore(), 10, 44);
 		
 		
 		gsm.draw(g);

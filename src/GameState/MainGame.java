@@ -91,6 +91,9 @@ public class MainGame extends GameState{
 		
 		g.setColor(Color.WHITE);
 		g.drawString("Score: " + score, 10, 32);
+		
+		//g.drawString("Score: " + p.getScore(), 10, 32);
+		g.drawString("Opponent Score: " + p.getUser().getEScore(), 10, 44);
 	}
 	
 	public void keyPressed(int k) {

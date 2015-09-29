@@ -24,7 +24,7 @@ public class Background {
 	
 	public Background (String s, double ms)
 	{
-		try{
+		/*try{
 			image = ImageIO.read(
 			getClass().getResourceAsStream(s)		
 					);
@@ -34,7 +34,7 @@ public class Background {
 			e.printStackTrace();
 			
 		}
-		
+		*/
 
 	}
 	
