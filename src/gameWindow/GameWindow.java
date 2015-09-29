@@ -10,7 +10,7 @@ public class GameWindow extends JFrame{
 	public GameWindow(){
 		super();
 		
-		this.setTitle("Colors");
+		this.setTitle("Prism");
 		this.setBackground(Color.black);
 		this.setContentPane(new GamePanel());
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);

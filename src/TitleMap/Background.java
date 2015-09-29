@@ -58,8 +58,16 @@ public class Background {
 	}
 	
 	public void draw(Graphics2D g){
+<<<<<<< HEAD
 		g.drawImage(new ImageIcon("images/background.png").getImage(), (int)x, (int)y, 800,800, null);
 		g.drawImage(new ImageIcon("images/background.png").getImage(), (int)x + 800, (int)y, 800,800, null);
+=======
+		
+		g.drawImage(new ImageIcon("images/colorsscrolling.jpg").getImage(), (int)x, (int)y, 800,800, null);
+		g.drawImage(new ImageIcon("images/colorsscrolling.jpg").getImage(), (int)x + 800, (int)y, 800,800, null);
+		
+		
+>>>>>>> abb6e3962d79d20e07d976c215a266fdc9df39ee
 	}
 	
 	
