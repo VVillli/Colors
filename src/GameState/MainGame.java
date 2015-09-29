@@ -73,6 +73,7 @@ public class MainGame extends GameState{
 					t.remove(i);
 					t.add(new Target((int)(Math.random()*GamePanel.width) - 50,(int)(Math.random()*GamePanel.height)-50));
 					b.remove(j);
+					p.increaseScore();
 					score++;
 					break;
 				}

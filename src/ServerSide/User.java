@@ -118,11 +118,11 @@ public class User extends Thread{
 		        line= Integer.toString(player.getScore());// br.readLine(); 
 		        System.out.println("Current Score: "+line );
 		        while(line.compareTo("QUIT")!=0){
-		        		try {
+		        	/*	try {
 		        		    Thread.sleep(1000);                 //1000 milliseconds is one second.
 		        		} catch(InterruptedException ex) {
 		        		    Thread.currentThread().interrupt();
-		        		}
+		        		}*/
 		        	System.out.println("Server << "+line );
 		                os.println(line);
 		                os.flush();
